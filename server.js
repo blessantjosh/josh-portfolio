@@ -7,6 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+console.log('__dirname:', __dirname);
 console.log('Static files served from:', path.join(__dirname, 'public'));
 console.log('Directory contents:', require('fs').readdirSync(path.join(__dirname, 'public')));
 
