@@ -7,6 +7,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+console.log('Static files served from:', path.join(__dirname, 'public'));
+console.log('Directory contents:', require('fs').readdirSync(path.join(__dirname, 'public')));
+
+app.get('/health', (req, res) => res.json({ status: 'ok', port: process.env.PORT }));
+
 app.post('/api/contact', async (req, res) => {
   const { name, email, subject, message } = req.body;
   if (!name || !email || !message) return res.status(400).json({ error: 'Missing fields.' });
@@ -35,6 +40,10 @@ app.post('/api/contact', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Email failed.' });
   }
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
